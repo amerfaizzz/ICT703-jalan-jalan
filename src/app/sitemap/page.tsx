@@ -608,16 +608,16 @@ export default function SitemapPage() {
                 Unified Navigation Bar
               </h3>
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">Home</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Link href="/" className="text-slate-400 hover:text-white hover:underline">Home</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="text-rose-400">Plan Trip</span>
+                  <Link href="/predictions" className="text-rose-400 hover:text-rose-300 hover:underline">Plan Trip</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="text-blue-400">Dashboard</span>
+                  <Link href="/dashboard" className="text-blue-400 hover:text-blue-300 hover:underline">Dashboard</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="text-violet-400">My Travel</span>
+                  <Link href="/informatics/dashboard" className="text-violet-400 hover:text-violet-300 hover:underline">My Travel</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="text-orange-400">Community</span>
+                  <Link href="/community" className="text-orange-400 hover:text-orange-300 hover:underline">Community</Link>
                 </div>
                 <p className="text-slate-500 text-xs mt-2">All groups accessible from any page via shared navigation</p>
               </div>
@@ -630,11 +630,11 @@ export default function SitemapPage() {
                 Cross-Group Data Flow
               </h3>
               <div className="space-y-1 text-sm">
-                <p><span className="text-rose-400">G5 Predictions</span> <span className="text-slate-500">→ Creates trip details</span></p>
-                <p><span className="text-blue-400">G2 Dashboard</span> <span className="text-slate-500">→ Shows live destination data</span></p>
-                <p><span className="text-violet-400">G3 Informatics</span> <span className="text-slate-500">→ Tracks budget & expenses</span></p>
-                <p><span className="text-orange-400">G4 Community</span> <span className="text-slate-500">→ Shares travel experiences</span></p>
-                <p><span className="text-emerald-400">G1 Chat</span> <span className="text-slate-500">→ Assists across all planning</span></p>
+                <p><Link href="/predictions" className="text-rose-400 hover:text-rose-300 hover:underline">G5 Predictions</Link> <span className="text-slate-500">→ Creates trip details</span></p>
+                <p><Link href="/dashboard" className="text-blue-400 hover:text-blue-300 hover:underline">G2 Dashboard</Link> <span className="text-slate-500">→ Shows live destination data</span></p>
+                <p><Link href="/informatics/dashboard" className="text-violet-400 hover:text-violet-300 hover:underline">G3 Informatics</Link> <span className="text-slate-500">→ Tracks budget & expenses</span></p>
+                <p><Link href="/community" className="text-orange-400 hover:text-orange-300 hover:underline">G4 Community</Link> <span className="text-slate-500">→ Shares travel experiences</span></p>
+                <p><Link href="/chat" className="text-emerald-400 hover:text-emerald-300 hover:underline">G1 Chat</Link> <span className="text-slate-500">→ Assists across all planning</span></p>
               </div>
             </div>
           </div>
@@ -646,25 +646,25 @@ export default function SitemapPage() {
               <div>
                 <p className="text-slate-400 text-xs mb-2">First-Time Visitor</p>
                 <div className="flex flex-wrap items-center gap-1">
-                  <span className="px-2 py-1 bg-slate-700 rounded text-slate-200">/</span>
+                  <Link href="/" className="px-2 py-1 bg-slate-700 rounded text-slate-200 hover:bg-slate-600 transition-colors">/</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="px-2 py-1 bg-rose-900/50 rounded text-rose-300">/predictions</span>
+                  <Link href="/predictions" className="px-2 py-1 bg-rose-900/50 rounded text-rose-300 hover:bg-rose-800/50 transition-colors">/predictions</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="px-2 py-1 bg-emerald-900/50 rounded text-emerald-300">/chat</span>
+                  <Link href="/chat" className="px-2 py-1 bg-emerald-900/50 rounded text-emerald-300 hover:bg-emerald-800/50 transition-colors">/chat</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="px-2 py-1 bg-blue-900/50 rounded text-blue-300">/dashboard</span>
+                  <Link href="/dashboard" className="px-2 py-1 bg-blue-900/50 rounded text-blue-300 hover:bg-blue-800/50 transition-colors">/dashboard</Link>
                 </div>
               </div>
               <div>
                 <p className="text-slate-400 text-xs mb-2">Returning User</p>
                 <div className="flex flex-wrap items-center gap-1">
-                  <span className="px-2 py-1 bg-orange-900/50 rounded text-orange-300">/login</span>
+                  <Link href="/login" className="px-2 py-1 bg-orange-900/50 rounded text-orange-300 hover:bg-orange-800/50 transition-colors">/login</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="px-2 py-1 bg-violet-900/50 rounded text-violet-300">/informatics</span>
+                  <Link href="/informatics/dashboard" className="px-2 py-1 bg-violet-900/50 rounded text-violet-300 hover:bg-violet-800/50 transition-colors">/informatics</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="px-2 py-1 bg-blue-900/50 rounded text-blue-300">/dashboard</span>
+                  <Link href="/dashboard" className="px-2 py-1 bg-blue-900/50 rounded text-blue-300 hover:bg-blue-800/50 transition-colors">/dashboard</Link>
                   <ArrowRight className="w-3 h-3 text-slate-500" />
-                  <span className="px-2 py-1 bg-orange-900/50 rounded text-orange-300">/community</span>
+                  <Link href="/community" className="px-2 py-1 bg-orange-900/50 rounded text-orange-300 hover:bg-orange-800/50 transition-colors">/community</Link>
                 </div>
               </div>
             </div>
