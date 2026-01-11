@@ -13,11 +13,18 @@ import {
   BudgetMetricsCard,
 } from "@/components/dashboard";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Navigation } from "@/components/shared/navigation";
 import { GroupLabel } from "@/components/shared/group-label";
-import { Search, Users, Calendar, ChevronDown } from "lucide-react";
 import { FlowGuide } from "@/components/shared/flow-guide";
+import {
+  AnimatedBackground,
+  UnifiedCard,
+  PageSection,
+} from "@/components/shared/page-layout";
+import { Search, Users, Calendar, ChevronDown, LayoutDashboard, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
   const [attractionFilter, setAttractionFilter] = useState<"All" | "Open">("All");
@@ -26,63 +33,112 @@ export default function DashboardPage() {
   const [budgetSortOrder, setBudgetSortOrder] = useState<"asc" | "desc">("desc");
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9]">
+    <div className="min-h-screen bg-white dark:bg-neutral-950 relative">
       <Navigation />
       <GroupLabel group={2} />
+      <AnimatedBackground variant="subtle" />
 
-      <main className="container mx-auto px-6 lg:px-24 py-8">
+      <main className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-8">
         {/* Search Bar + CTA Card Row */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           {/* Left: Search inputs */}
           <div className="flex flex-wrap items-center gap-3">
             {/* Destination Input */}
-            <div className="flex items-center gap-2 px-3 py-2 bg-white border border-[#E2E8F0] rounded-lg shadow-sm min-w-[180px] max-w-[225px]">
-              <Search className="size-5 text-[#64748B]" />
+            <div className={cn(
+              "flex items-center gap-2 px-4 py-3",
+              "bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm",
+              "border border-neutral-200 dark:border-neutral-700",
+              "rounded-xl shadow-lg shadow-black/5",
+              "min-w-[180px] max-w-[225px]",
+              "transition-all duration-200 hover:shadow-xl"
+            )}>
+              <Search className="size-5 text-neutral-400" />
               <input
                 type="text"
                 defaultValue="Kuala Lumpur"
-                className="flex-1 text-sm bg-transparent outline-none text-[#64748B]"
+                className="flex-1 text-sm bg-transparent outline-none text-neutral-700 dark:text-neutral-200"
               />
             </div>
 
             {/* Pax Selector */}
-            <div className="flex items-center gap-2 px-2 py-2 bg-white border border-[#E2E8F0] rounded-lg shadow-sm">
-              <Users className="size-5 text-[#64748B]" />
-              <span className="text-sm text-[#737373]">1</span>
-              <ChevronDown className="size-4 text-[#A3A3A3]" />
+            <div className={cn(
+              "flex items-center gap-2 px-3 py-3",
+              "bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm",
+              "border border-neutral-200 dark:border-neutral-700",
+              "rounded-xl shadow-lg shadow-black/5",
+              "transition-all duration-200 hover:shadow-xl cursor-pointer"
+            )}>
+              <Users className="size-5 text-blue-500" />
+              <span className="text-sm text-neutral-700 dark:text-neutral-200 font-medium">1</span>
+              <ChevronDown className="size-4 text-neutral-400" />
             </div>
 
             {/* Date Picker */}
-            <div className="flex items-center gap-2 px-2 py-2 bg-white border border-[#E2E8F0] rounded-lg shadow-sm">
-              <Calendar className="size-5 text-[#64748B]" />
-              <span className="text-sm text-[#64748B]">23/01/25</span>
+            <div className={cn(
+              "flex items-center gap-2 px-3 py-3",
+              "bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm",
+              "border border-neutral-200 dark:border-neutral-700",
+              "rounded-xl shadow-lg shadow-black/5",
+              "transition-all duration-200 hover:shadow-xl cursor-pointer"
+            )}>
+              <Calendar className="size-5 text-blue-500" />
+              <span className="text-sm text-neutral-700 dark:text-neutral-200">23/01/25</span>
             </div>
 
             {/* Search Button */}
-            <Button className="bg-[#0F172A] text-[#F8FAFC] px-4 h-9 text-sm font-semibold rounded-lg">
+            <Button
+              className={cn(
+                "h-12 px-6 font-semibold",
+                "bg-gradient-to-r from-blue-500 to-indigo-500",
+                "hover:from-blue-600 hover:to-indigo-600",
+                "text-white border-0",
+                "shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40",
+                "transition-all duration-300"
+              )}
+            >
               Search
             </Button>
           </div>
 
           {/* Right: CTA Card */}
-          <Card className="border-[#9333EA] shadow-sm bg-white">
-            <CardContent className="flex items-center gap-8 p-4">
-              <p className="text-base text-[#334155]">
+          <UnifiedCard gradient className="group p-4">
+            <div className="flex items-center gap-6">
+              <p className="text-base text-neutral-700 dark:text-neutral-200">
                 Check the itinerary that we plan for you!
               </p>
               <Link href="/dashboard/schedule">
-                <Button className="bg-[#0F172A] text-[#F8FAFC] px-4 text-sm font-semibold rounded-lg">
+                <Button
+                  className={cn(
+                    "font-semibold",
+                    "bg-gradient-to-r from-blue-500 to-indigo-500",
+                    "hover:from-blue-600 hover:to-indigo-600",
+                    "text-white border-0",
+                    "shadow-lg shadow-blue-500/25",
+                    "transition-all duration-300"
+                  )}
+                >
                   Schedule & Updates
+                  <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-            </CardContent>
-          </Card>
+            </div>
+          </UnifiedCard>
         </div>
 
         {/* Page Title */}
-        <h2 className="text-2xl md:text-[30px] font-semibold text-[#334155] leading-tight tracking-tight mb-6">
-          Data found for your destination:
-        </h2>
+        <div className="flex items-center gap-4 mb-8">
+          <div className="size-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30 animate-float-bounce">
+            <LayoutDashboard className="size-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 dark:text-neutral-100">
+              Data found for your destination
+            </h1>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              Live travel insights for Kuala Lumpur
+            </p>
+          </div>
+        </div>
 
         {/* Main Dashboard Layout - Left grid + Right column */}
         <div className="flex flex-col lg:flex-row gap-6">
@@ -99,7 +155,7 @@ export default function DashboardPage() {
                 setPriceSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
             />
-            
+
             {/* Row 2 */}
             <SafetyCard />
             <HalalSpotsCard
@@ -108,7 +164,7 @@ export default function DashboardPage() {
                 setHalalSortBy((prev) => (prev === "rating" ? "distance" : "rating"))
               }
             />
-            
+
             {/* Row 3 */}
             <WeatherCard />
             <TrendingCard />
@@ -127,11 +183,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Flow Guide */}
-        <div className="mt-8">
+        <div className="mt-10">
           <FlowGuide
-            variant="card"
+            variant="banner"
             title="Continue Your Journey"
-            maxSuggestions={2}
+            maxSuggestions={3}
           />
         </div>
       </main>

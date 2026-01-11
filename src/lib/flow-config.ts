@@ -4,6 +4,11 @@ import {
   LayoutDashboard,
   PieChart,
   Users,
+  Compass,
+  Map,
+  Wand2,
+  BookOpen,
+  Target,
 } from "lucide-react";
 
 // ============================================================================
@@ -19,6 +24,10 @@ export type GroupConfig = {
   icon: typeof Sparkles;
   gradient: string;
   accentColor: string;
+  glowColor: string;
+  bgClass: string;
+  borderClass: string;
+  textClass: string;
 };
 
 export type FlowStep = {
@@ -47,6 +56,10 @@ export const groupConfig: Record<GroupNumber, GroupConfig> = {
     icon: MessageSquare,
     gradient: "from-emerald-500 to-teal-500",
     accentColor: "emerald",
+    glowColor: "rgba(16, 185, 129, 0.4)",
+    bgClass: "bg-emerald-500/10",
+    borderClass: "border-emerald-500/30",
+    textClass: "text-emerald-600 dark:text-emerald-400",
   },
   2: {
     name: "Travel Dashboard",
@@ -54,6 +67,10 @@ export const groupConfig: Record<GroupNumber, GroupConfig> = {
     icon: LayoutDashboard,
     gradient: "from-blue-500 to-indigo-500",
     accentColor: "blue",
+    glowColor: "rgba(59, 130, 246, 0.4)",
+    bgClass: "bg-blue-500/10",
+    borderClass: "border-blue-500/30",
+    textClass: "text-blue-600 dark:text-blue-400",
   },
   3: {
     name: "My Travel",
@@ -61,6 +78,10 @@ export const groupConfig: Record<GroupNumber, GroupConfig> = {
     icon: PieChart,
     gradient: "from-violet-500 to-purple-500",
     accentColor: "violet",
+    glowColor: "rgba(139, 92, 246, 0.4)",
+    bgClass: "bg-violet-500/10",
+    borderClass: "border-violet-500/30",
+    textClass: "text-violet-600 dark:text-violet-400",
   },
   4: {
     name: "Community",
@@ -68,6 +89,10 @@ export const groupConfig: Record<GroupNumber, GroupConfig> = {
     icon: Users,
     gradient: "from-orange-500 to-amber-500",
     accentColor: "orange",
+    glowColor: "rgba(249, 115, 22, 0.4)",
+    bgClass: "bg-orange-500/10",
+    borderClass: "border-orange-500/30",
+    textClass: "text-orange-600 dark:text-orange-400",
   },
   5: {
     name: "Smart Planner",
@@ -75,6 +100,10 @@ export const groupConfig: Record<GroupNumber, GroupConfig> = {
     icon: Sparkles,
     gradient: "from-rose-500 to-pink-500",
     accentColor: "rose",
+    glowColor: "rgba(244, 63, 94, 0.4)",
+    bgClass: "bg-rose-500/10",
+    borderClass: "border-rose-500/30",
+    textClass: "text-rose-600 dark:text-rose-400",
   },
 };
 

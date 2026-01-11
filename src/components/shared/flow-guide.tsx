@@ -1,29 +1,41 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Compass } from "lucide-react";
+import { Compass, Sparkles, Map } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { FlowCTA, FlowCTAInline } from "./flow-cta";
 import { getNextSteps, type NextStep } from "@/lib/flow-config";
 
 // ============================================================================
-// Gradient Background Component (Group 1 style)
+// Animated Gradient Background
 // ============================================================================
 
 function GradientBackground({ className }: { className?: string }) {
   return (
     <div
-      className={cn("absolute inset-0 overflow-hidden pointer-events-none", className)}
+      className={cn(
+        "absolute inset-0 overflow-hidden pointer-events-none",
+        className
+      )}
     >
+      {/* Primary gradient orbs */}
       <div
         className="absolute w-full h-full opacity-60"
         style={{
           background: `
-            radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 70%)
+            radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+            radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 60%)
           `,
+        }}
+      />
+      {/* Animated accent */}
+      <div
+        className="absolute top-0 right-0 w-32 h-32 rounded-full animate-glow-pulse"
+        style={{
+          background: "radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%)",
         }}
       />
     </div>
@@ -31,7 +43,7 @@ function GradientBackground({ className }: { className?: string }) {
 }
 
 // ============================================================================
-// FlowGuide Component
+// FlowGuide Component with Animations
 // ============================================================================
 
 interface FlowGuideProps {
@@ -57,13 +69,15 @@ export function FlowGuide({
   const primaryStep = steps.find((s) => s.primary);
   const secondarySteps = steps.filter((s) => !s.primary);
 
-  // Inline variant - compact badges
+  // ============================================================================
+  // Inline Variant - Compact Animated Pills
+  // ============================================================================
   if (variant === "inline") {
     return (
-      <div className={cn("flex flex-wrap items-center gap-2", className)}>
-        <span className="text-sm text-neutral-500 dark:text-neutral-400 flex items-center gap-1.5">
-          <Compass className="size-4" />
-          {title}
+      <div className={cn("flex flex-wrap items-center gap-3", className)}>
+        <span className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+          <Map className="size-4 animate-float-bounce" />
+          <span className="font-medium">{title}</span>
         </span>
         {steps.map((step) => (
           <FlowCTAInline
@@ -77,39 +91,56 @@ export function FlowGuide({
     );
   }
 
-  // Banner variant - full width with gradient background
+  // ============================================================================
+  // Banner Variant - Full Width with Animations
+  // ============================================================================
   if (variant === "banner") {
     return (
       <div
         className={cn(
           "relative overflow-hidden rounded-2xl",
-          "bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl",
-          "border border-black/5 dark:border-white/10",
-          "shadow-xl shadow-black/5",
+          "quest-glass",
+          "shadow-xl shadow-indigo-500/5",
           className
         )}
       >
         <GradientBackground />
 
-        <div className="relative z-10 p-6">
-          <div className="flex items-center gap-2 mb-5">
-            <div className="size-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-              <Compass className="size-4 text-white" />
+        <div className="relative z-10 p-6 md:p-8">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="size-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-float-bounce">
+              <Compass className="size-5 text-white" />
             </div>
-            <h3 className="font-semibold text-neutral-800 dark:text-neutral-100">
-              {title}
-            </h3>
+            <div>
+              <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-100">
+                {title}
+              </h3>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                Choose your next step
+              </p>
+            </div>
+            <Badge
+              variant="secondary"
+              className="ml-auto bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border-0"
+            >
+              <Sparkles className="size-3 mr-1" />
+              {steps.length} available
+            </Badge>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Steps Grid */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {primaryStep && (
-              <FlowCTA
-                href={primaryStep.path}
-                label={primaryStep.label}
-                description={primaryStep.description}
-                group={primaryStep.group}
-                primary
-              />
+              <div className="sm:col-span-2 lg:col-span-1">
+                <FlowCTA
+                  href={primaryStep.path}
+                  label={primaryStep.label}
+                  description={primaryStep.description}
+                  group={primaryStep.group}
+                  primary
+                />
+              </div>
             )}
             {secondarySteps.map((step) => (
               <FlowCTA
@@ -126,29 +157,38 @@ export function FlowGuide({
     );
   }
 
-  // Card variant (default) - glass-morphism card
+  // ============================================================================
+  // Card Variant (Default) - Glass-morphism with Animations
+  // ============================================================================
   return (
     <Card
       className={cn(
         "relative overflow-hidden",
-        "bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl",
-        "border border-black/5 dark:border-white/10",
-        "shadow-lg shadow-black/5",
+        "quest-glass",
+        "shadow-lg shadow-indigo-500/5",
         className
       )}
     >
       <GradientBackground />
 
       <CardHeader className="relative z-10 pb-3">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
-          <div className="size-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-            <Compass className="size-3.5 text-white" />
+        <CardTitle className="flex items-center gap-3 text-base font-bold">
+          <div className="size-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-md shadow-indigo-500/30 animate-float-bounce">
+            <Compass className="size-4 text-white" />
           </div>
           <span className="text-neutral-700 dark:text-neutral-200">{title}</span>
+          {steps.length > 1 && (
+            <Badge
+              variant="outline"
+              className="ml-auto border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 text-[10px]"
+            >
+              {steps.length} options
+            </Badge>
+          )}
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="relative z-10 pt-0 space-y-2">
+      <CardContent className="relative z-10 pt-0 space-y-3">
         {primaryStep && (
           <FlowCTA
             href={primaryStep.path}
@@ -173,7 +213,7 @@ export function FlowGuide({
 }
 
 // ============================================================================
-// FlowGuideMini - Single suggestion
+// FlowGuideMini - Single Suggestion with Animation
 // ============================================================================
 
 export function FlowGuideMini({
@@ -192,14 +232,19 @@ export function FlowGuideMini({
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-2 py-2 px-3 rounded-full",
-        "bg-white/60 dark:bg-white/10 backdrop-blur-sm",
-        "border border-black/5 dark:border-white/10",
+        "inline-flex items-center gap-3 py-2.5 px-4 rounded-full",
+        "quest-glass shadow-md",
         className
       )}
     >
-      <span className="text-sm text-neutral-500">Next:</span>
-      <FlowCTAInline href={step.path} label={step.label} group={step.group} />
+      <span className="text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+        Next:
+      </span>
+      <FlowCTAInline
+        href={step.path}
+        label={step.label}
+        group={step.group}
+      />
     </div>
   );
 }

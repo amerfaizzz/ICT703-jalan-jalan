@@ -15,6 +15,8 @@ import { Navigation } from "@/components/shared/navigation";
 import { GroupLabel } from "@/components/shared/group-label";
 import { PlayerAvatar } from "@/components/shared/player-avatar";
 import { FlowGuide } from "@/components/shared/flow-guide";
+import { AnimatedBackground, UnifiedCard } from "@/components/shared/page-layout";
+import { cn } from "@/lib/utils";
 
 // Initial welcome messages for different contexts
 const welcomeMessages: Record<string, ChatMessageProps[]> = {
@@ -161,60 +163,38 @@ export default function ChatPage() {
   const handleSelectChat = (chatId: string) => {
     setActiveChat(chatId);
     setShowLanding(false);
-    // In a real app, this would load the chat history
     setMessages(welcomeMessages.default);
   };
 
   // Landing view
   if (showLanding) {
     return (
-      <div className="relative flex flex-col min-h-screen overflow-hidden bg-white">
+      <div className="relative flex flex-col min-h-screen overflow-hidden bg-white dark:bg-neutral-950">
         <Navigation />
         <GroupLabel group={1} />
-        {/* Gradient Background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute w-[2805px] h-[1080px] opacity-80"
-            style={{
-              background: `
-                radial-gradient(circle at 114% 61%, rgba(130, 29, 53, 0.4) 0%, rgba(241, 40, 68, 0) 100%),
-                radial-gradient(circle at 100% 100%, rgba(31, 92, 140, 0.4) 0%, rgba(77, 163, 236, 0) 100%),
-                radial-gradient(circle at 105% 13%, rgba(165, 32, 232, 0.5) 0%, rgba(189, 107, 231, 0.3) 50%, rgba(237, 104, 255, 0) 100%),
-                radial-gradient(circle at 83% -5%, rgba(9, 250, 142, 0.3) 0%, rgba(9, 250, 238, 0) 100%),
-                radial-gradient(circle at 99% 112%, rgba(77, 163, 236, 0.4) 0%, rgba(77, 163, 236, 0) 100%),
-                #FFFFFF
-              `,
-              filter: "blur(400px)",
-              left: "-723px",
-              top: "-28px",
-            }}
-          />
-        </div>
+        <AnimatedBackground variant="vibrant" />
 
         {/* Main Content */}
         <div className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 py-12">
-          <div className="flex flex-col items-center gap-10 w-full max-w-[832px]">
+          <div className="flex flex-col items-center gap-10 w-full max-w-3xl">
             {/* Header */}
-            <div className="flex flex-col items-center gap-3">
-              {/* Animated Player Avatar */}
+            <div className="flex flex-col items-center gap-4">
               <PlayerAvatar autoAnimate size={80} />
-              <h1 className="text-3xl font-semibold text-neutral-600 text-center tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-neutral-100 text-center tracking-tight">
                 Trevllo.ai — Smarter Planning. Smoother Journeys.
               </h1>
             </div>
 
             {/* Chat Input Card */}
-            <div className="w-full bg-white/80 backdrop-blur-sm rounded-[14px] border border-black/10 shadow-xl p-6">
-              <div className="flex flex-col gap-4">
-                <ChatInput onSend={handleSend} />
-              </div>
-            </div>
+            <UnifiedCard gradient className="w-full p-6 md:p-8">
+              <ChatInput onSend={handleSend} />
+            </UnifiedCard>
 
             {/* Quick Actions */}
             <QuickActions onSelect={handleQuickAction} />
 
             {/* Flow Guide */}
-            <div className="mt-8">
+            <div className="mt-4">
               <FlowGuide variant="inline" title="Or explore:" />
             </div>
           </div>
@@ -225,69 +205,55 @@ export default function ChatPage() {
 
   // Chat view
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-white">
+    <div className="flex flex-col h-screen overflow-hidden bg-white dark:bg-neutral-950">
       <Navigation />
       <GroupLabel group={1} />
       <div className="flex flex-1 overflow-hidden">
-      {/* Sidebar */}
-      <ChatSidebar
-        activeChat={activeChat}
-        onSelectChat={handleSelectChat}
-        onNewChat={handleNewChat}
-        isCollapsed={!sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
-      />
+        {/* Sidebar */}
+        <ChatSidebar
+          activeChat={activeChat}
+          onSelectChat={handleSelectChat}
+          onNewChat={handleNewChat}
+          isCollapsed={!sidebarOpen}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+        />
 
-      {/* Main Content */}
-      <div className="flex flex-col flex-1 relative">
-        {/* Gradient Background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute w-[2805px] h-[1080px] opacity-80"
-            style={{
-              background: `
-                radial-gradient(circle at 114% 61%, rgba(130, 29, 53, 0.4) 0%, rgba(241, 40, 68, 0) 100%),
-                radial-gradient(circle at 100% 100%, rgba(31, 92, 140, 0.4) 0%, rgba(77, 163, 236, 0) 100%),
-                radial-gradient(circle at 105% 13%, rgba(165, 32, 232, 0.5) 0%, rgba(189, 107, 231, 0.3) 50%, rgba(237, 104, 255, 0) 100%),
-                radial-gradient(circle at 83% -5%, rgba(9, 250, 142, 0.3) 0%, rgba(9, 250, 238, 0) 100%),
-                radial-gradient(circle at 99% 112%, rgba(77, 163, 236, 0.4) 0%, rgba(77, 163, 236, 0) 100%),
-                #FFFFFF
-              `,
-              filter: "blur(400px)",
-              left: "-723px",
-              top: "-28px",
-            }}
-          />
-        </div>
+        {/* Main Content */}
+        <div className="flex flex-col flex-1 relative">
+          <AnimatedBackground variant="subtle" />
 
-        {/* Header */}
-        <ChatHeader onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+          {/* Header */}
+          <ChatHeader onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto relative z-10">
-          <div className="max-w-4xl mx-auto px-6 py-8 flex flex-col gap-6">
-            {messages.map((message, index) =>
-              message.role === "user" ? (
-                <UserMessage
-                  key={index}
-                  content={message.content}
-                  timestamp={message.timestamp}
-                />
-              ) : (
-                <AssistantMessage
-                  key={index}
-                  content={message.content}
-                  timestamp={message.timestamp}
-                />
-              )
-            )}
-            <div ref={messagesEndRef} />
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto relative z-10">
+            <div className="max-w-4xl mx-auto px-6 py-8 flex flex-col gap-6">
+              {messages.map((message, index) =>
+                message.role === "user" ? (
+                  <UserMessage
+                    key={index}
+                    content={message.content}
+                    timestamp={message.timestamp}
+                  />
+                ) : (
+                  <AssistantMessage
+                    key={index}
+                    content={message.content}
+                    timestamp={message.timestamp}
+                  />
+                )
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+
+          {/* Input Area */}
+          <div className="relative z-10 border-t border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl">
+            <div className="max-w-4xl mx-auto p-4">
+              <ChatInput onSend={handleSend} />
+            </div>
           </div>
         </div>
-
-        {/* Input Area */}
-        <ChatInput onSend={handleSend} />
-      </div>
       </div>
     </div>
   );

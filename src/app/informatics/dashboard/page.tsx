@@ -1,11 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Calendar, TrendingDown, TrendingUp, Lightbulb, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, TrendingDown, TrendingUp, Lightbulb, RefreshCw, ChevronLeft, ChevronRight, PieChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { DonutChart, MetricCard, WatchlistCard } from "@/components/informatics";
 import { FlowGuide } from "@/components/shared/flow-guide";
+import { Navigation } from "@/components/shared/navigation";
+import { GroupLabel } from "@/components/shared/group-label";
+import {
+  AnimatedBackground,
+  UnifiedCard,
+  PageHeader,
+} from "@/components/shared/page-layout";
+import { cn } from "@/lib/utils";
 
 const insights = [
   {
@@ -31,7 +39,7 @@ const currencyRates = [
   { currency: "CHF", rate: 4.89, change: 0.01, flag: "🇨🇭" },
 ];
 
-export default function DashboardPage() {
+export default function InformaticsDashboardPage() {
   const [currentInsight, setCurrentInsight] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -86,145 +94,175 @@ export default function DashboardPage() {
   }, [isPaused]);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <div className="px-6 pt-8 pb-4">
-        <p className="text-muted-foreground text-sm">Welcome back, Traveler</p>
-        <h1 className="text-2xl font-bold text-foreground">My Travel Pulse</h1>
-      </div>
+    <div className="min-h-screen bg-white dark:bg-neutral-950 relative">
+      <Navigation />
+      <GroupLabel group={3} />
+      <AnimatedBackground variant="subtle" />
 
-      {/* Donut Chart Section */}
-      <div className="px-6 mb-6">
-        <Card className="p-6">
-          <DonutChart percentage={65} label="Yearly Budget Used" total="RM 15,000" />
-        </Card>
-      </div>
-
-      {/* Metric Cards */}
-      <div className="px-6 mb-6">
-        <div className="grid grid-cols-3 gap-3">
-          <MetricCard
-            label="Trips Taken"
-            value="4"
-            icon={<Calendar className="w-4 h-4" />}
-          />
-          <MetricCard
-            label="Avg. Overspend"
-            value="12%"
-            icon={<TrendingUp className="w-4 h-4" />}
-            variant="warning"
-          />
-          <MetricCard
-            label="Savings Goal"
-            value="88%"
-            icon={<TrendingDown className="w-4 h-4" />}
-            variant="success"
-          />
+      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-8">
+          <div className="size-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center shadow-xl shadow-violet-500/30 animate-float-bounce">
+            <PieChart className="size-7 text-white" />
+          </div>
+          <div>
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm">Welcome back, Traveler</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 dark:text-neutral-100">
+              My Travel Pulse
+            </h1>
+          </div>
         </div>
-      </div>
 
-      {/* Watchlist */}
-      <div className="px-6 mb-6">
-        <h2 className="font-semibold text-foreground mb-3">Active Trip Watchlist</h2>
-        <WatchlistCard
-          destination="London"
-          country="United Kingdom"
-          priceStatus="falling"
-          change={-8}
-          avgPrice="RM 3,200"
-        />
-        <WatchlistCard
-          destination="Tokyo"
-          country="Japan"
-          priceStatus="rising"
-          change={5}
-          avgPrice="RM 4,500"
-        />
-      </div>
+        {/* Donut Chart Section */}
+        <UnifiedCard gradient className="p-6 mb-6">
+          <DonutChart percentage={65} label="Yearly Budget Used" total="RM 15,000" />
+        </UnifiedCard>
 
-      {/* Insight Box with Currency Exchange */}
-      <div className="px-6 mb-6">
-        <div className="flex gap-3">
+        {/* Metric Cards */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <UnifiedCard className="p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="size-8 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center">
+                <Calendar className="size-4 text-violet-600 dark:text-violet-400" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">4</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">Trips Taken</p>
+          </UnifiedCard>
+
+          <UnifiedCard className="p-4 border-amber-500/30">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="size-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                <TrendingUp className="size-4 text-amber-600 dark:text-amber-400" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">12%</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">Avg. Overspend</p>
+          </UnifiedCard>
+
+          <UnifiedCard className="p-4 border-emerald-500/30">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="size-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                <TrendingDown className="size-4 text-emerald-600 dark:text-emerald-400" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">88%</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">Savings Goal</p>
+          </UnifiedCard>
+        </div>
+
+        {/* Watchlist */}
+        <div className="mb-6">
+          <h2 className="font-bold text-lg text-neutral-800 dark:text-neutral-100 mb-4">
+            Active Trip Watchlist
+          </h2>
+          <div className="space-y-3">
+            <WatchlistCard
+              destination="London"
+              country="United Kingdom"
+              priceStatus="falling"
+              change={-8}
+              avgPrice="RM 3,200"
+            />
+            <WatchlistCard
+              destination="Tokyo"
+              country="Japan"
+              priceStatus="rising"
+              change={5}
+              avgPrice="RM 4,500"
+            />
+          </div>
+        </div>
+
+        {/* Insight Box with Currency Exchange */}
+        <div className="flex gap-4 mb-8">
           {/* Insight Section */}
-          <Card className="flex-1 p-4 border-primary/20 bg-primary/5">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Lightbulb className="w-5 h-5 text-primary" />
+          <UnifiedCard gradient className="flex-1 p-5">
+            <div className="flex items-start gap-4">
+              <div className="size-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-violet-500/25">
+                <Lightbulb className="size-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="font-medium text-foreground text-sm">Insight</p>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold text-neutral-800 dark:text-neutral-100">Insight</p>
+                    <Badge variant="secondary" className="bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 border-0 text-xs">
+                      AI
+                    </Badge>
+                  </div>
                   <div className="flex items-center gap-1">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6"
+                      className="size-7 hover:bg-violet-100 dark:hover:bg-violet-900/30"
                       onClick={goToPrevious}
                       disabled={insights.length <= 1}
                     >
-                      <ChevronLeft className="w-4 h-4" />
+                      <ChevronLeft className="size-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6"
+                      className="size-7 hover:bg-violet-100 dark:hover:bg-violet-900/30"
                       onClick={goToNext}
                       disabled={insights.length <= 1}
                     >
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="size-4" />
                     </Button>
                   </div>
                 </div>
                 <div
-                  className={`transition-all duration-300 ${
+                  className={cn(
+                    "transition-all duration-300",
                     isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
-                  }`}
+                  )}
                 >
-                  <p className="text-muted-foreground text-xs leading-relaxed">
+                  <p className="text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed">
                     {insights[currentInsight].text}
                   </p>
                 </div>
-                {/* Progress dots - clickable */}
-                <div className="flex gap-1 mt-3">
+                {/* Progress dots */}
+                <div className="flex gap-1.5 mt-4">
                   {insights.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => goToInsight(index)}
-                      className={`h-1 rounded-full transition-all duration-300 hover:bg-primary/60 ${
-                        index === currentInsight ? "w-4 bg-primary" : "w-1 bg-primary/30"
-                      }`}
+                      className={cn(
+                        "h-1.5 rounded-full transition-all duration-300",
+                        index === currentInsight
+                          ? "w-6 bg-violet-500"
+                          : "w-1.5 bg-violet-200 dark:bg-violet-800 hover:bg-violet-300 dark:hover:bg-violet-700"
+                      )}
                       aria-label={`Go to insight ${index + 1}`}
                     />
                   ))}
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-2">
-                  {currentInsight + 1} of {insights.length}
-                </p>
               </div>
             </div>
-          </Card>
+          </UnifiedCard>
 
           {/* Currency Exchange Section */}
-          <Card className="w-32 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-foreground">EUR/MYR</span>
-              <RefreshCw className="w-3 h-3 text-muted-foreground" />
+          <UnifiedCard className="w-36 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-100">EUR/MYR</span>
+              <RefreshCw className="size-3.5 text-neutral-400 hover:text-neutral-600 cursor-pointer transition-colors" />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {currencyRates.map((rate) => (
                 <div key={rate.currency} className="flex items-center justify-between">
-                  <div className="flex items-center gap-1">
-                    <span className="text-xs">{rate.flag}</span>
-                    <span className="text-xs text-muted-foreground">{rate.currency}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm">{rate.flag}</span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">{rate.currency}</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs font-semibold text-foreground">
+                    <span className="text-xs font-bold text-neutral-800 dark:text-neutral-100">
                       {rate.rate.toFixed(2)}
                     </span>
                     <span
-                      className={`text-[10px] ml-1 ${
-                        rate.change >= 0 ? "text-green-600" : "text-red-600"
-                      }`}
+                      className={cn(
+                        "text-[10px] ml-1 font-medium",
+                        rate.change >= 0 ? "text-emerald-600" : "text-red-500"
+                      )}
                     >
                       {rate.change >= 0 ? "+" : ""}
                       {rate.change.toFixed(2)}
@@ -233,21 +271,17 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-            <p className="text-[9px] text-muted-foreground mt-2 text-center">Live rates</p>
-          </Card>
+            <p className="text-[10px] text-neutral-400 mt-3 text-center">Live rates</p>
+          </UnifiedCard>
         </div>
-      </div>
 
-      {/* Flow Guide */}
-      <div className="px-6 mb-6">
+        {/* Flow Guide */}
         <FlowGuide
           variant="card"
           title="Explore More"
           maxSuggestions={2}
         />
-      </div>
-
+      </main>
     </div>
   );
 }
-
