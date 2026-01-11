@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Check, BookOpen, Calendar } from "lucide-react";
+import { FlowGuide } from "@/components/shared/flow-guide";
 
 interface Trip {
   id: number;
@@ -269,6 +270,15 @@ export default function ReflectionPage() {
           <BookOpen className="w-4 h-4 mr-2" />
           Save Lesson to Profile
         </Button>
+      </div>
+
+      {/* Flow Guide */}
+      <div className="px-6 mb-6">
+        <FlowGuide
+          variant="card"
+          title="Share Your Experience"
+          maxSuggestions={2}
+        />
       </div>
 
     </div>

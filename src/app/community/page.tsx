@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Navigation } from "@/components/shared/navigation";
 import { GroupLabel } from "@/components/shared/group-label";
 import { EventCard } from "@/components/community/event-card";
+import { FlowGuide } from "@/components/shared/flow-guide";
 import Link from "next/link";
 
 // Trip Card component
@@ -86,14 +87,18 @@ export default function CommunityPage() {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-8 lg:gap-12">
           <div className="relative flex-1 max-w-[536px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-            <Input 
-              placeholder="Where are you travelling to?" 
+            <Input
+              placeholder="Where are you travelling to?"
               className="pl-10 py-2 border border-purple-950 shadow-sm rounded-lg"
             />
           </div>
           <Button className="bg-blue-900 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-lg">
             Search
           </Button>
+        </div>
+        {/* Flow Guide */}
+        <div className="mt-6">
+          <FlowGuide variant="inline" title="Ready to plan?" />
         </div>
       </section>
 

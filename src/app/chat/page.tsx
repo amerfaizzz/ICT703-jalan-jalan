@@ -14,6 +14,7 @@ import type { ChatMessageProps } from "@/components/chat";
 import { Navigation } from "@/components/shared/navigation";
 import { GroupLabel } from "@/components/shared/group-label";
 import { PlayerAvatar } from "@/components/shared/player-avatar";
+import { FlowGuide } from "@/components/shared/flow-guide";
 
 // Initial welcome messages for different contexts
 const welcomeMessages: Record<string, ChatMessageProps[]> = {
@@ -211,6 +212,11 @@ export default function ChatPage() {
 
             {/* Quick Actions */}
             <QuickActions onSelect={handleQuickAction} />
+
+            {/* Flow Guide */}
+            <div className="mt-8">
+              <FlowGuide variant="inline" title="Or explore:" />
+            </div>
           </div>
         </div>
       </div>

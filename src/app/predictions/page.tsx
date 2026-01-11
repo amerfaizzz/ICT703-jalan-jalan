@@ -16,6 +16,7 @@ import {
   Plus,
   ArrowRight
 } from "lucide-react";
+import { FlowGuide } from "@/components/shared/flow-guide";
 
 export default function PredictionsPage() {
   const router = useRouter();
@@ -152,6 +153,11 @@ export default function PredictionsPage() {
           <p className="text-center text-sm text-slate-400 mt-4">
             Please fill in all fields to continue
           </p>
+        </div>
+
+        {/* Flow Guide */}
+        <div className="mt-8">
+          <FlowGuide variant="inline" title="Need assistance?" />
         </div>
       </main>
     </div>

@@ -32,6 +32,7 @@ import {
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FlowGuide } from "@/components/shared/flow-guide";
 
 // Step Indicator Component
 function StepIndicator({ currentStep }: { currentStep: number }) {
@@ -506,6 +507,15 @@ export default function PlanPage() {
           >
             Confirm & Save Plan
           </Button>
+        </div>
+
+        {/* Flow Guide - What's Next */}
+        <div className="mt-12">
+          <FlowGuide
+            variant="banner"
+            title="What's Next?"
+            maxSuggestions={3}
+          />
         </div>
       </main>
     </div>

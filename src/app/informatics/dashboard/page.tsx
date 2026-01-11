@@ -5,6 +5,7 @@ import { Calendar, TrendingDown, TrendingUp, Lightbulb, RefreshCw, ChevronLeft, 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DonutChart, MetricCard, WatchlistCard } from "@/components/informatics";
+import { FlowGuide } from "@/components/shared/flow-guide";
 
 const insights = [
   {
@@ -235,6 +236,15 @@ export default function DashboardPage() {
             <p className="text-[9px] text-muted-foreground mt-2 text-center">Live rates</p>
           </Card>
         </div>
+      </div>
+
+      {/* Flow Guide */}
+      <div className="px-6 mb-6">
+        <FlowGuide
+          variant="card"
+          title="Explore More"
+          maxSuggestions={2}
+        />
       </div>
 
     </div>

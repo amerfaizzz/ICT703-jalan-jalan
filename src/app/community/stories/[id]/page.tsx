@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Navigation } from "@/components/shared/navigation";
 import { GroupLabel } from "@/components/shared/group-label";
 import { ChevronLeft, ChevronRight, PlaneTakeoff, Send, Flag } from "lucide-react";
+import { FlowGuide } from "@/components/shared/flow-guide";
 
 // Mock data for the story detail
 const storyData = {
@@ -195,6 +196,15 @@ export default function StoryDetailPage({
               <Input
                 placeholder="Add Comment"
                 className="border-purple-900 shadow-sm"
+              />
+            </div>
+
+            {/* Flow Guide */}
+            <div className="mt-4">
+              <FlowGuide
+                variant="card"
+                title="Inspired by this story?"
+                maxSuggestions={2}
               />
             </div>
           </div>

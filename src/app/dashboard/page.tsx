@@ -17,6 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Navigation } from "@/components/shared/navigation";
 import { GroupLabel } from "@/components/shared/group-label";
 import { Search, Users, Calendar, ChevronDown } from "lucide-react";
+import { FlowGuide } from "@/components/shared/flow-guide";
 
 export default function DashboardPage() {
   const [attractionFilter, setAttractionFilter] = useState<"All" | "Open">("All");
@@ -123,6 +124,15 @@ export default function DashboardPage() {
               }
             />
           </div>
+        </div>
+
+        {/* Flow Guide */}
+        <div className="mt-8">
+          <FlowGuide
+            variant="card"
+            title="Continue Your Journey"
+            maxSuggestions={2}
+          />
         </div>
       </main>
     </div>

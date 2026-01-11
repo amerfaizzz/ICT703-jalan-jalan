@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Navigation } from "@/components/shared/navigation";
 import { Footer } from "@/components/shared/footer";
+import { JourneySelector } from "@/components/shared/journey-selector";
 import {
   Map,
   Users,
@@ -133,6 +134,11 @@ export default function Home() {
                     Talk to AI
                   </Button>
                 </Link>
+              </div>
+
+              {/* Journey Selector */}
+              <div className="mt-12 max-w-2xl mx-auto animate-fade-in">
+                <JourneySelector />
               </div>
             </div>
           </div>
