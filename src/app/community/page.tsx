@@ -15,6 +15,7 @@ import { GroupLabel } from "@/components/shared/group-label";
 import { FlowGuide } from "@/components/shared/flow-guide";
 import { EventCard } from "@/components/community/event-card";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 // Trip Card component
@@ -53,7 +54,8 @@ function StoryCard({
   author,
   authorBadge,
   tags,
-  bgGradient
+  bgGradient,
+  image
 }: {
   id: number;
   location: string;
@@ -62,7 +64,14 @@ function StoryCard({
   authorBadge?: string;
   tags: string[];
   bgGradient: string;
+  image?: string;
 }) {
+  const imagePath = image
+    ? image.startsWith("http") || image.startsWith("/")
+      ? image
+      : `/community/${image}`
+    : null;
+
   return (
     <Link href={`/community/stories/${id}`}>
       <UnifiedCard className="group p-0 gap-0">
@@ -85,7 +94,15 @@ function StoryCard({
             )}
           </div>
         </div>
-        <div className={cn("h-48 md:h-56 relative overflow-hidden", bgGradient)}>
+        <div className={cn("h-100 md:h-108 relative overflow-hidden", !imagePath && bgGradient)}>
+          {imagePath && (
+            <Image
+              src={imagePath}
+              alt={place}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -210,30 +227,33 @@ export default function CommunityPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             <StoryCard
               id={1}
-              location="Kuala Lumpur, Malaysia"
-              place="Kuala Lumpur City Centre"
+              location="Melaka"
+              place="Malacca Sultanate Museum"
               author="Imran Rosli"
               authorBadge="Verified Local"
-              tags={["#LocalTourist", "#KLCC"]}
+              tags={["#LocalTourist", "#Melaka"]}
               bgGradient="bg-gradient-to-br from-blue-400 to-purple-500"
+              image="story-01.webp"
             />
             <StoryCard
               id={2}
-              location="Langkawi Island, Malaysia"
-              place="Langkawi Island Bridge"
+              location="Melaka"
+              place="Muzium Samudera"
               author="Farah Shazwanie"
               authorBadge="Frequent Traveller"
-              tags={["#Langkawi"]}
+              tags={["#Melaka"]}
               bgGradient="bg-gradient-to-br from-cyan-400 to-blue-500"
+              image="story-02.webp"
             />
             <StoryCard
               id={3}
-              location="Macau, Hong Kong"
-              place="Lisboeta, Macau"
-              author="Saranya Mohabatten"
+              location="Melaka"
+              place="Kampung Morten"
+              author="Hafiz Suhaimi"
               authorBadge="Verified Local"
-              tags={["#Macau", "#Local", "#Tourist"]}
+              tags={["#Melaka", "#Local", "#Tourist"]}
               bgGradient="bg-gradient-to-br from-orange-400 to-red-500"
+              image="story-03.webp"
             />
           </div>
         </section>
