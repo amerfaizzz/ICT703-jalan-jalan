@@ -25,15 +25,15 @@ import { StoryCard } from "@/components/community/story-card";
 
 // Mock data for the story detail
 const storyData = {
-  location: "Berjaya Langkawi Resort, Malaysia",
-  address: "Karung Berkunci 200, Burau Bay",
+  location: "The Shore, Melaka",
+  address: "193, Jalan Pengkalan Arang, Kampung Portugis, 75050 Melaka, Malaysia",
   author: {
     name: "Alif Haikal",
     badge: "Frequent Traveller",
     avatar: "/community/story-user-1.png",
   },
-  title: "The Finolhu Villas: All-inclusive Resort in Maldives",
-  content: `Club Med Maldives is an excellent choice for travelers seeking a relaxing yet well-organized all-inclusive island getaway. The resort is located on a private island with crystal-clear waters, white sandy beaches, and beautiful marine life, creating a truly tropical and peaceful atmosphere. Guests frequently praise the friendly and professional staff, who provide attentive service while maintaining a warm and welcoming environment. The all-inclusive concept is a major advantage, offering a good variety of international and Asian cuisine, quality drinks, and snacks throughout the day, allowing guests to enjoy their stay without worrying about additional costs. Activities such as snorkeling, water sports, fitness classes, and evening entertainment add to the overall experience, while the calm setting also makes it ideal for couples and honeymooners.`,
+  title: "The Shore, Melaka",
+  content: `The Shore, Melaka is an excellent choice for travelers seeking a relaxing yet well-organized all-inclusive island getaway. The resort is located on a private island with crystal-clear waters, white sandy beaches, and beautiful marine life, creating a truly tropical and peaceful atmosphere. Guests frequently praise the friendly and professional staff, who provide attentive service while maintaining a warm and welcoming environment. The all-inclusive concept is a major advantage, offering a good variety of international and Asian cuisine, quality drinks, and snacks throughout the day, allowing guests to enjoy their stay without worrying about additional costs. Activities such as snorkeling, water sports, fitness classes, and evening entertainment add to the overall experience, while the calm setting also makes it ideal for couples and honeymooners.`,
   images: [
     { id: 1, src: "/community/story-detail-1.png" },
     { id: 2, src: "/community/story-detail-2.png" },
@@ -67,31 +67,31 @@ const storyData = {
 const moreStories = [
   {
     id: 1,
-    location: "Kuala Lumpur, Malaysia",
-    place: "Kuala Lumpur City Centre",
+    location: "Melaka",
+    place: "The Shore, Melaka",
     author: "Imran Rosli",
     authorBadge: "Verified Local",
-    tags: ["#LocalTourist", "#KLCC"],
+    tags: ["#LocalTourist", "#Melaka"],
     bgGradient: "bg-gradient-to-br from-blue-400 to-purple-500",
     image: "story-01.webp"
   },
   {
     id: 2,
-    location: "Langkawi Island, Malaysia",
-    place: "Langkawi Island Bridge",
+    location: "Melaka",
+    place: "The Shore, Melaka",
     author: "Farah Shazwanie",
     authorBadge: "Frequent Traveller",
-    tags: ["#Langkawi"],
+    tags: ["#Melaka"],
     bgGradient: "bg-gradient-to-br from-cyan-400 to-blue-500",
     image: "story-02.webp"
   },
   {
     id: 3,
-    location: "Macau, Hong Kong",
-    place: "Lisboeta, Macau",
+    location: "Melaka",
+    place: "The Shore, Melaka",
     author: "Saranya Mohabatten",
     authorBadge: "Verified Local",
-    tags: ["#Macau", "#Local", "#Tourist"],
+    tags: ["#Melaka", "#Local", "#Tourist"],
     bgGradient: "bg-gradient-to-br from-orange-400 to-red-500",
     image: "story-03.webp"
   },
