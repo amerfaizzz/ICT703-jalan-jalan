@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";  // Add this directive to mark the file as a Client Component
 
 
@@ -23,4 +24,632 @@ export default function ItineraryPage() {
       </main>
     </div>
   );
+=======
+"use client"
+
+import * as React from "react"
+import { Navigation } from "@/components/shared/navigation"
+import TabBar from "@/components/ui/TabBar"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import {
+  MapPin,
+  Wallet,
+  CalendarDays,
+  Clock,
+  AlertCircle,
+  Lightbulb,
+  X,
+  Plus,
+  ChevronRight,
+} from "lucide-react"
+
+type ConflictIssue = {
+  id: string
+  member: string
+  description: string
+  severity: "high" | "medium" | "low"
+}
+
+type Destination = {
+  id: string
+  name: string
+  description: string
+  cost: string
+  duration: string
+  season: string
+  interests: string[]
+  groupMatch: number
+  individualMatches: {
+    name: string
+    percentage: number
+  }[]
+  note?: string
+}
+
+export default function ItineraryPage() {
+  const [selectedDay, setSelectedDay] = React.useState("1")
+
+  const day1Activities = [
+    "Arrival and hotel check-in at city centre",
+    "Visit A Famosa Portuguese fortress ruins",
+    "Explore St. Paul's Hill and Christ Church",
+    "Jonker Street night market and local dinner",
+  ]
+
+  const conflictIssues: ConflictIssue[] = [
+    {
+      id: "1",
+      member: "Nurul Aisyah",
+      description: "Nurul Aisyah prefers higher-budget trips (min RM1000)",
+      severity: "high",
+    },
+    {
+      id: "2",
+      member: "Wong Wei Ming",
+      description: "Wong Wei Ming prefers higher-budget trips (min RM1500)",
+      severity: "high",
+    },
+    {
+      id: "3",
+      member: "Priya Devi",
+      description: "Priya Devi prefers higher-budget trips (min RM800)",
+      severity: "high",
+    },
+    {
+      id: "4",
+      member: "Ahmad Zaki",
+      description: "Ahmad Zaki prefers higher-budget trips (min RM2000)",
+      severity: "high",
+    },
+    {
+      id: "5",
+      member: "Wong Wei Ming",
+      description: "Wong Wei Ming may not enjoy the selected destinations",
+      severity: "medium",
+    },
+    {
+      id: "6",
+      member: "Ahmad Zaki",
+      description: "Ahmad Zaki may not enjoy the selected destinations",
+      severity: "medium",
+    },
+    {
+      id: "7",
+      member: "Wong Wei Ming",
+      description: "Wong Wei Ming prefers different seasons for travel",
+      severity: "low",
+    },
+  ]
+
+  const selectedDestinations: Destination[] = [
+    {
+      id: "1",
+      name: "Melaka Historic City",
+      description:
+        "UNESCO World Heritage Site with rich history, colonial architecture, and famous street food",
+      cost: "RM800",
+      duration: "Raya",
+      season: "Raya",
+      interests: ["Culture", "Food", "Shopping"],
+      groupMatch: 59,
+      individualMatches: [
+        { name: "Nurul", percentage: 79 },
+        { name: "Wong", percentage: 21 },
+        { name: "Priya", percentage: 100 },
+        { name: "Ahmad", percentage: 36 },
+      ],
+      note: "Wong, Ahmad may not enjoy this destination",
+    },
+    {
+      id: "2",
+      name: "Jonker Street & Chinatown",
+      description:
+        "Vibrant night market with antiques, local crafts, and delicious Peranakan cuisine",
+      cost: "RM600",
+      duration: "CNY",
+      season: "CNY",
+      interests: ["Culture", "Food", "Shopping"],
+      groupMatch: 47,
+      individualMatches: [
+        { name: "Nurul", percentage: 71 },
+        { name: "Wong", percentage: 16 },
+        { name: "Priya", percentage: 90 },
+        { name: "Ahmad", percentage: 12 },
+      ],
+      note: "Wong, Ahmad may not enjoy this destination",
+    },
+  ]
+
+  const availableDestinations: Destination[] = [
+    {
+      id: "3",
+      name: "A Famosa & St. Paul's Hill",
+      description:
+        "Historic Portuguese fortress ruins and stunning hilltop views of Melaka",
+      cost: "RM500",
+      duration: "2 days",
+      season: "Raya",
+      interests: ["Culture", "Photography", "Nature"],
+      groupMatch: 0,
+      individualMatches: [],
+    },
+    {
+      id: "4",
+      name: "Melaka River Cruise",
+      description:
+        "Scenic river cruise showcasing colorful murals and heritage buildings along the waterway",
+      cost: "RM700",
+      duration: "2 days",
+      season: "Raya",
+      interests: ["Nature", "Photography", "Culture"],
+      groupMatch: 0,
+      individualMatches: [],
+    },
+  ]
+
+  const getSeverityColor = (severity: ConflictIssue["severity"]) => {
+    switch (severity) {
+      case "high":
+        return "bg-red-50 border-red-200 text-red-900"
+      case "medium":
+        return "bg-yellow-50 border-yellow-200 text-yellow-900"
+      case "low":
+        return "bg-blue-50 border-blue-200 text-blue-900"
+    }
+  }
+
+  const getSeverityDotColor = (severity: ConflictIssue["severity"]) => {
+    switch (severity) {
+      case "high":
+        return "bg-red-500"
+      case "medium":
+        return "bg-yellow-400"
+      case "low":
+        return "bg-blue-500"
+    }
+  }
+
+  const getMatchColor = (percentage: number) => {
+    if (percentage >= 70) return "bg-green-100 text-green-800"
+    if (percentage >= 40) return "bg-yellow-100 text-yellow-800"
+    return "bg-red-100 text-red-800"
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-violet-50 to-slate-100">
+      <Navigation />
+      <TabBar />
+
+      <main className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-8">
+        <div className="flex flex-col gap-6">
+          {/* Full Trip Itinerary */}
+          <Card className="border-[#AD46FF] bg-white">
+            <CardHeader>
+              <div className="flex flex-col gap-1">
+                <CardTitle className="text-xl font-bold">
+                  Full Trip Itinerary
+                </CardTitle>
+                <p className="text-sm text-slate-500">3 days • 2 destinations</p>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col lg:flex-row gap-4">
+                {/* Day Tabs */}
+                <Tabs
+                  value={selectedDay}
+                  onValueChange={setSelectedDay}
+                  className="w-full lg:w-auto"
+                >
+                  <TabsList className="bg-slate-100 h-auto p-1 flex-col lg:flex-row">
+                    <TabsTrigger
+                      value="1"
+                      className="w-full lg:w-auto data-[state=active]:bg-white"
+                    >
+                      Day 1
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="2"
+                      className="w-full lg:w-auto data-[state=active]:bg-white"
+                    >
+                      Day 2
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="3"
+                      className="w-full lg:w-auto data-[state=active]:bg-white"
+                    >
+                      Day 3
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+
+                {/* Day Content */}
+                <div className="flex-1 border-l-4 border-[#AD46FF] bg-gradient-to-r from-violet-50 to-pink-50 rounded-r-xl p-6">
+                  <Tabs value={selectedDay} onValueChange={setSelectedDay}>
+                    <TabsContent value="1" className="mt-0">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="size-5 text-violet-700" />
+                          <h3 className="text-lg font-bold text-slate-900">
+                            Jonker Street & A Famosa
+                          </h3>
+                        </div>
+                        <p className="text-sm text-slate-600">
+                          Explore UNESCO World Heritage sites including A Famosa
+                          fortress, St. Paul's Hill, and vibrant Jonker Street
+                          with its night market, antiques, and authentic Peranakan
+                          cuisine
+                        </p>
+
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                          <div className="flex items-center gap-2">
+                            <Wallet className="size-4 text-slate-500" />
+                            RM600
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="size-4 text-slate-500" />
+                            1 day
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CalendarDays className="size-4 text-slate-500" />
+                            CNY
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-600">
+                            Group Match:
+                          </span>
+                          <div className="flex-1 max-w-xs">
+                            <Progress
+                              value={47}
+                              className="h-2 bg-slate-200 [&_[data-slot=progress-indicator]]:bg-violet-500"
+                            />
+                          </div>
+                          <span className="text-xs font-bold text-violet-700">
+                            47%
+                          </span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {["Culture", "Food", "Shopping"].map((interest) => (
+                            <Badge
+                              key={interest}
+                              className="bg-violet-100 text-violet-800 border-0 px-2 py-1 text-xs"
+                            >
+                              {interest}
+                            </Badge>
+                          ))}
+                        </div>
+
+                        <div className="border-t border-violet-200 pt-4 mt-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <AlertCircle className="size-4 text-violet-700" />
+                            <h4 className="text-sm font-bold text-slate-900">
+                              Day 1 Activities:
+                            </h4>
+                          </div>
+                          <ul className="space-y-2">
+                            {day1Activities.map((activity, index) => (
+                              <li
+                                key={index}
+                                className="flex items-start gap-3 text-sm text-slate-700"
+                              >
+                                <span className="text-violet-700 font-bold mt-0.5">
+                                  •
+                                </span>
+                                <span>{activity}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="2" className="mt-0">
+                      <p className="text-sm text-slate-600">
+                        Day 2 itinerary content...
+                      </p>
+                    </TabsContent>
+                    <TabsContent value="3" className="mt-0">
+                      <p className="text-sm text-slate-600">
+                        Day 3 itinerary content...
+                      </p>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Conflict Analysis & Suggestions */}
+          <Card className="border-[#AD46FF] bg-white">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold">
+                Conflict Analysis & Suggestions
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                {/* Conflict Level */}
+                <div className="flex items-center gap-6">
+                  <span className="text-sm text-slate-700">Conflict Level:</span>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <div className="size-2.5 rounded-full bg-red-500" />
+                      <span className="text-sm text-slate-700">High</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="size-2.5 rounded-full bg-yellow-400" />
+                      <span className="text-sm text-slate-700">Medium</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="size-2.5 rounded-full bg-blue-500" />
+                      <span className="text-sm text-slate-700">Low</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Conflict Summary */}
+                <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                  <h3 className="text-base font-semibold text-slate-900 mb-4">
+                    Conflict Summary
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-lg bg-red-50">
+                        <AlertCircle className="size-5 text-red-700" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-700">Budget Issues</p>
+                        <p className="text-3xl font-bold text-red-600">4</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-lg bg-yellow-50">
+                        <AlertCircle className="size-5 text-yellow-700" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-700">
+                          Interest Mismatches
+                        </p>
+                        <p className="text-3xl font-bold text-yellow-600">2</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-lg bg-blue-50">
+                        <AlertCircle className="size-5 text-blue-700" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-700">
+                          Season Preferences
+                        </p>
+                        <p className="text-3xl font-bold text-blue-600">1</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Detailed Issues */}
+                <div className="border-t border-slate-200 pt-4">
+                  <h3 className="text-base font-semibold text-slate-900 mb-4">
+                    Detailed Issues:
+                  </h3>
+                  <div className="space-y-2">
+                    {conflictIssues.map((issue) => (
+                      <div
+                        key={issue.id}
+                        className={`p-3 rounded-xl border ${getSeverityColor(issue.severity)}`}
+                      >
+                        <p className="text-sm font-medium">{issue.member}</p>
+                        <p className="text-xs mt-1">{issue.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Recommendations */}
+                <div className="bg-violet-50 border border-violet-200 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <Lightbulb className="size-5 text-violet-700 mt-0.5" />
+                    <div className="flex-1">
+                      <h3 className="text-base font-semibold text-violet-900 mb-2">
+                        Recommendations:
+                      </h3>
+                      <ul className="space-y-1 text-sm text-violet-800">
+                        <li className="flex items-start gap-2">
+                          <span>•</span>
+                          <span>
+                            Add destinations that match underserved interests to
+                            improve group satisfaction
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span>•</span>
+                          <span>
+                            Consider flexible travel dates to accommodate
+                            different season preferences
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Selected Destinations */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold text-slate-900">
+                Selected Destinations
+              </h2>
+              <p className="text-sm text-slate-500">
+                2 destination(s) selected
+              </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {selectedDestinations.map((destination) => (
+                <Card
+                  key={destination.id}
+                  className="border-[#AD46FF] bg-white"
+                >
+                  <CardContent className="p-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-slate-900 mb-1">
+                            {destination.name}
+                          </h3>
+                          <p className="text-sm text-slate-600">
+                            {destination.description}
+                          </p>
+                        </div>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <X className="size-4" />
+                        </Button>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                        <div className="flex items-center gap-2">
+                          <Wallet className="size-4 text-slate-500" />
+                          {destination.cost}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CalendarDays className="size-4 text-slate-500" />
+                          {destination.season}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="size-4 text-slate-500" />
+                          {destination.interests.join(", ")}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <AlertCircle className="size-4 text-violet-700" />
+                            <span className="text-xs text-slate-600">
+                              Group Match
+                            </span>
+                          </div>
+                          <span className="text-sm font-bold text-violet-700">
+                            {destination.groupMatch}%
+                          </span>
+                        </div>
+                        <Progress
+                          value={destination.groupMatch}
+                          className="h-2 bg-slate-200 [&_[data-slot=progress-indicator]]:bg-violet-500"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-xs text-slate-600">
+                          Individual Matches:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {destination.individualMatches.map((match) => (
+                            <Badge
+                              key={match.name}
+                              className={`${getMatchColor(match.percentage)} border-0 px-2 py-1 text-xs`}
+                            >
+                              {match.name}: {match.percentage}%
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      {destination.note && (
+                        <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
+                          <p className="text-xs text-yellow-900">
+                            <span className="font-bold">Note:</span>{" "}
+                            {destination.note}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Available Destinations */}
+          <Card className="border-[#AD46FF] bg-white">
+            <CardHeader>
+              <CardTitle className="text-lg font-bold">
+                Available Destinations
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {availableDestinations.map((destination) => (
+                  <Card
+                    key={destination.id}
+                    className="border border-slate-200 bg-white"
+                  >
+                    <CardContent className="p-6">
+                      <div className="space-y-4">
+                        <div className="flex items-start justify-between">
+                          <h3 className="text-lg font-bold text-slate-900">
+                            {destination.name}
+                          </h3>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Plus className="size-4" />
+                          </Button>
+                        </div>
+                        <p className="text-xs text-slate-600">
+                          {destination.description}
+                        </p>
+
+                        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600">
+                          <div className="flex items-center gap-2">
+                            <Wallet className="size-3 text-slate-500" />
+                            {destination.cost}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CalendarDays className="size-3 text-slate-500" />
+                            {destination.season}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="size-3 text-slate-500" />
+                            {destination.duration}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {destination.interests.map((interest) => (
+                            <Badge
+                              key={interest}
+                              className="bg-slate-100 text-slate-700 border-0 px-2 py-1 text-xs"
+                            >
+                              {interest}
+                            </Badge>
+                          ))}
+                        </div>
+
+                        <div className="border-t border-violet-200 pt-3">
+                          <Button
+                            variant="outline"
+                            className="w-full justify-between border-violet-200 text-violet-700 hover:bg-violet-50"
+                          >
+                            <span>Suggested Itinerary</span>
+                            <ChevronRight className="size-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    </div>
+  )
+>>>>>>> Frontend-dashboard
 }
