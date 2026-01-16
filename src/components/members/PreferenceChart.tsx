@@ -1,5 +1,5 @@
 import { Member } from '../../types';
-import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 
 interface PreferenceChartProps {
     members: Member[];
@@ -28,13 +28,14 @@ const CustomSeasonTooltip = ({ active, payload }: { active?: boolean; payload?: 
     if (active && payload && payload.length) {
         const data = payload[0];
         const season = data.payload.season;
-        const percentage = ((data.value / data.payload.totalMembers) * 100).toFixed(0);
+        const actualCount = data.value - 1; // Subtract the padding we added
+        const percentage = ((actualCount / data.payload.totalMembers) * 100).toFixed(0);
 
         return (
             <div className="rounded-md border border-gray-300 bg-white px-2 py-1 shadow-md">
                 <p className="text-xs font-semibold text-gray-900">{season}</p>
                 <p className="text-xs text-violet-700">
-                    {data.value} / {data.payload.totalMembers} ({percentage}%)
+                    {actualCount} / {data.payload.totalMembers} ({percentage}%)
                 </p>
             </div>
         );
@@ -58,18 +59,30 @@ export function PreferenceChart({ members }: PreferenceChartProps) {
     }));
 
     // Calculate season preferences
+    const allSeasons = ['Raya', 'CNY', 'Merdeka', 'Deepavali'];
     const seasonCounts: { [key: string]: number } = {};
+    
+    // Initialize all seasons with 0
+    allSeasons.forEach((season) => {
+        seasonCounts[season] = 0;
+    });
+    
+    // Count member preferences
     members.forEach((member) => {
         member.seasons.forEach((season) => {
             seasonCounts[season] = (seasonCounts[season] || 0) + 1;
         });
     });
 
-    const radarData = Object.entries(seasonCounts).map(([season, count]) => ({
+    const radarData = allSeasons.map((season) => ({
         season,
-        count,
+        count: (seasonCounts[season] || 0) + 1, // Add 1 for better visualization
         totalMembers: members.length,
     }));
+
+    // Calculate max count for proper scaling
+    const maxCount = Math.max(...Object.values(seasonCounts), 1);
+    const scaledMax = Math.ceil((maxCount + 1) * 1.2); // Add 20% padding to the scale (account for +1)
 
     const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4', '#ef4444', '#6366f1'];
 
@@ -112,8 +125,14 @@ export function PreferenceChart({ members }: PreferenceChartProps) {
                         Season Preferences
                     </h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <RadarChart data={radarData}>
-                            <PolarGrid />
+                        <RadarChart data={radarData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                            <PolarGrid gridType="polygon" />
+                            <PolarAngleAxis dataKey="season" />
+                            <PolarRadiusAxis 
+                                angle={90} 
+                                domain={[0, scaledMax]}
+                                tick={false}
+                            />
                             <Tooltip
                                 content={<CustomSeasonTooltip />}
                                 contentStyle={{
@@ -123,13 +142,13 @@ export function PreferenceChart({ members }: PreferenceChartProps) {
                                 }}
                                 cursor={{ fill: "rgba(139, 92, 246, 0.1)" }}
                             />
-                            <PolarAngleAxis dataKey="season" />
                             <Radar
                                 name="Preferences"
                                 dataKey="count"
                                 stroke="#8b5cf6"
                                 fill="#8b5cf6"
                                 fillOpacity={0.6}
+                                strokeWidth={2}
                             />
                         </RadarChart>
                     </ResponsiveContainer>
