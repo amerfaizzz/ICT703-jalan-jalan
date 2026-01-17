@@ -259,7 +259,7 @@ export default function ItineraryPage() {
                   onValueChange={setSelectedDay}
                   className="w-full lg:w-auto"
                 >
-                  <TabsList className="bg-slate-100 h-auto p-1 flex-col lg:flex-row">
+                  <TabsList className="bg-slate-100 h-auto p-1 flex-col lg:flex-col">
                     <TabsTrigger
                       value="1"
                       className="w-full lg:w-auto data-[state=active]:bg-white"

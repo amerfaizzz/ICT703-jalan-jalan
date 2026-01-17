@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Member } from '../../types';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 
@@ -24,6 +25,8 @@ const seasonDetails: { [key: string]: { description: string; monthRange: string 
     },
 };
 
+const RADIAN = Math.PI / 180;
+
 const CustomSeasonTooltip = ({ active, payload }: { active?: boolean; payload?: any[] }) => {
     if (active && payload && payload.length) {
         const data = payload[0];
@@ -45,6 +48,39 @@ const CustomSeasonTooltip = ({ active, payload }: { active?: boolean; payload?: 
 };
 
 export function PreferenceChart({ members }: PreferenceChartProps) {
+    const [showPieLabels, setShowPieLabels] = useState(false);
+
+    const renderInterestLabel = ({
+        cx = 0,
+        cy = 0,
+        midAngle = 0,
+        outerRadius = 0,
+        name,
+        percent,
+        fill,
+        index,
+    }: any) => {
+        if (!showPieLabels || !name || percent === undefined) return null;
+
+        const radius = outerRadius + 18;
+        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+        const labelColor = fill ?? COLORS[(index ?? 0) % COLORS.length];
+
+        return (
+            <text
+                x={x}
+                y={y}
+                fill={labelColor}
+                textAnchor={x > cx ? 'start' : 'end'}
+                dominantBaseline="central"
+                className="text-xs font-medium"
+            >
+                {`${name} ${(percent * 100).toFixed(0)}%`}
+            </text>
+        );
+    };
+
     // Calculate interest distribution
     const interestCounts: { [key: string]: number } = {};
     members.forEach((member) => {
@@ -92,7 +128,11 @@ export function PreferenceChart({ members }: PreferenceChartProps) {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Interest Distribution */}
-                <div className="px-8 py-4">
+                <div
+                    className="px-8 py-4"
+                    onMouseEnter={() => setShowPieLabels(true)}
+                    onMouseLeave={() => setShowPieLabels(false)}
+                >
                     <h3 className="text-sm font-medium text-gray-700 mb-4 text-center">
                         Interest Distribution
                     </h3>
@@ -102,10 +142,8 @@ export function PreferenceChart({ members }: PreferenceChartProps) {
                                 data={pieData}
                                 cx="50%"
                                 cy="50%"
-                                labelLine={false}
-                                label={(props: { name?: string; percent?: number }) =>
-                                    `${props.name ?? ''} ${((props.percent ?? 0) * 100).toFixed(0)}%`
-                                }
+                                labelLine={showPieLabels}
+                                label={renderInterestLabel}
                                 outerRadius={70}
                                 fill="#8884d8"
                                 dataKey="value"
@@ -114,7 +152,15 @@ export function PreferenceChart({ members }: PreferenceChartProps) {
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
-                            <Legend />
+                            <Legend
+                                formatter={(value, entry) => {
+                                    const { color } = entry;
+                                    const item = pieData.find(d => d.name === value);
+                                    if (!item) return value;
+                                    const percentage = ((item.value / members.length) * 100).toFixed(0);
+                                    return <span style={{ color }}>{value} ({percentage}%)</span>;
+                                }}
+                            />
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
