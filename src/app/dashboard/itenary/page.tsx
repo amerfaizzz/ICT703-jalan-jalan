@@ -9,6 +9,13 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   MapPin,
   Wallet,
   CalendarDays,
@@ -109,6 +116,7 @@ const calculateIndividualMatch = (destination: Destination, member: typeof initi
 
 export default function ItineraryPage() {
   const [selectedDay, setSelectedDay] = React.useState("1")
+  const [conflictFilter, setConflictFilter] = React.useState<string>("all")
 
   const [currentSelectedDestinations, setCurrentSelectedDestinations] = React.useState<Destination[]>(() => {
     const selected = initialDestinations.slice(0, 2).map(dest => {
@@ -220,17 +228,52 @@ export default function ItineraryPage() {
     },
     {
       id: "2",
+      member: "Nurul",
+      description: "Accommodation budget exceeds limit.",
+      severity: "high",
+    },
+    {
+      id: "3",
+      member: "Ahmad",
+      description: "Food and dining budget is insufficient.",
+      severity: "high",
+    },
+    {
+      id: "4",
+      member: "Priya",
+      description: "Transportation costs are too high.",
+      severity: "high",
+    },
+    {
+      id: "5",
       member: "Ahmad",
       description: "Not interested in historical sites.",
       severity: "medium",
     },
     {
-      id: "3",
+      id: "6",
+      member: "Wong",
+      description: "Prefers adventure activities over cultural tours.",
+      severity: "medium",
+    },
+    {
+      id: "7",
       member: "Priya",
-      description: "Prefers beach destinations.",
+      description: "Prefers different travel season.",
       severity: "low",
     },
   ];
+
+  const filteredConflicts = conflictIssues.filter((c) => {
+    if (conflictFilter === "all") return true
+    return c.severity === conflictFilter
+  })
+
+  const conflictCounts = {
+    high: conflictIssues.filter((c) => c.severity === "high").length,
+    medium: conflictIssues.filter((c) => c.severity === "medium").length,
+    low: conflictIssues.filter((c) => c.severity === "low").length,
+  }
 
   return (
     <div className="min-h-screen bg-linear-to-b from-violet-50 to-slate-100">
@@ -381,31 +424,35 @@ export default function ItineraryPage() {
 
           {/* Conflict Analysis & Suggestions */}
           <Card className="border-[#AD46FF] bg-white">
-            <CardHeader>
+            <CardHeader className="pb-0">
               <CardTitle className="text-xl font-bold">
                 Conflict Analysis & Suggestions
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-1">
               <div className="space-y-6">
-                {/* Conflict Level */}
-                <div className="flex items-center gap-6">
-                  <span className="text-sm text-slate-700">Conflict Level:</span>
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <div className="size-2.5 rounded-full bg-red-500" />
-                      <span className="text-sm text-slate-700">High</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="size-2.5 rounded-full bg-yellow-400" />
-                      <span className="text-sm text-slate-700">Medium</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="size-2.5 rounded-full bg-blue-500" />
-                      <span className="text-sm text-slate-700">Low</span>
-                    </div>
-                  </div>
-                </div>
+                {/* Conflict Filter Dropdown */}
+                <Select value={conflictFilter} onValueChange={setConflictFilter}>
+                  <SelectTrigger 
+                    className={`w-[180px] ${
+                      conflictFilter === "high" 
+                        ? "border-red-500 text-red-700 bg-red-50" 
+                        : conflictFilter === "medium"
+                        ? "border-yellow-500 text-yellow-700 bg-yellow-50"
+                        : conflictFilter === "low"
+                        ? "border-blue-500 text-blue-700 bg-blue-50"
+                        : "border-violet-300 text-violet-700 bg-violet-50"
+                    }`}
+                  >
+                    <SelectValue placeholder="Filter" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All ({conflictIssues.length})</SelectItem>
+                    <SelectItem value="high">High ({conflictCounts.high})</SelectItem>
+                    <SelectItem value="medium">Medium ({conflictCounts.medium})</SelectItem>
+                    <SelectItem value="low">Low ({conflictCounts.low})</SelectItem>
+                  </SelectContent>
+                </Select>
 
                 {/* Conflict Summary */}
                 <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
@@ -453,7 +500,7 @@ export default function ItineraryPage() {
                     Detailed Issues:
                   </h3>
                   <div className="space-y-2">
-                    {conflictIssues.map((issue) => (
+                    {filteredConflicts.map((issue) => (
                       <div
                         key={issue.id}
                         className={`p-3 rounded-xl border ${getSeverityColor(issue.severity)}`}
