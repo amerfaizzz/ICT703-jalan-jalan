@@ -20,6 +20,11 @@ import {
   ChevronRight,
 } from "lucide-react"
 
+import {
+  initialMembers,
+  initialDestinations,
+} from "@/data/seed"
+
 type ConflictIssue = {
   id: string
   member: string
@@ -31,7 +36,7 @@ type Destination = {
   id: string
   name: string
   description: string
-  cost: string
+  cost: number
   duration: string
   season: string
   interests: string[]
@@ -43,19 +48,49 @@ type Destination = {
   note?: string
 }
 
+// Function to calculate group match percentage
+const calculateGroupMatch = (destination: Destination, members: typeof initialMembers): number => {
+  let totalScore = 0
+  const maxScore = members.length * 3 // 3 criteria: budget, season, interests
+
+  members.forEach(member => {
+    let memberScore = 0
+
+    // Budget match
+    if (destination.cost <= member.budgetMax) {
+      memberScore += 1
+    }
+
+    // Season match
+    if (member.seasons.includes(destination.season)) {
+      memberScore += 1
+    }
+
+    // Interest match (at least one common interest)
+    const commonInterests = destination.interests.filter(interest =>
+      member.interests.includes(interest)
+    )
+    if (commonInterests.length > 0) {
+      memberScore += 1
+    }
+
+    totalScore += memberScore
+  })
+
+  return Math.round((totalScore / maxScore) * 100)
+}
+
+
 export default function ItineraryPage() {
   const [selectedDay, setSelectedDay] = React.useState("1")
-  const [currentSelectedDestinations, setCurrentSelectedDestinations] = React.useState<Destination[]>([
-    {
-      id: "1",
-      name: "Melaka Historic City",
-      description:
-        "UNESCO World Heritage Site with rich history, colonial architecture, and famous street food",
-      cost: "RM800",
-      duration: "Raya",
-      season: "Raya",
-      interests: ["Culture", "Food", "Shopping"],
-      groupMatch: 59,
+
+  const [currentSelectedDestinations, setCurrentSelectedDestinations] = React.useState<Destination[]>(() => {
+    const selected = initialDestinations.slice(0, 2).map(dest => ({
+      ...dest,
+      cost: dest.cost,
+      duration: `${dest.duration} days`,
+      interests: dest.category,
+      groupMatch: calculateGroupMatch({ ...dest, cost: dest.cost, interests: dest.category, groupMatch: 0, individualMatches: [], note: '', duration: '', season: dest.season, id: dest.id, name: dest.name, description: dest.description }, initialMembers),
       individualMatches: [
         { name: "Nurul", percentage: 79 },
         { name: "Wong", percentage: 21 },
@@ -63,54 +98,23 @@ export default function ItineraryPage() {
         { name: "Ahmad", percentage: 36 },
       ],
       note: "Wong, Ahmad may not enjoy this destination",
-    },
-    {
-      id: "2",
-      name: "Jonker Street & Chinatown",
-      description:
-        "Vibrant night market with antiques, local crafts, and delicious Peranakan cuisine",
-      cost: "RM600",
-      duration: "CNY",
-      season: "CNY",
-      interests: ["Culture", "Food", "Shopping"],
-      groupMatch: 47,
-      individualMatches: [
-        { name: "Nurul", percentage: 71 },
-        { name: "Wong", percentage: 16 },
-        { name: "Priya", percentage: 90 },
-        { name: "Ahmad", percentage: 12 },
-      ],
-      note: "Wong, Ahmad may not enjoy this destination",
-    },
-  ]);
-  const [currentAvailableDestinations, setCurrentAvailableDestinations] = React.useState<Destination[]>([
-    {
-      id: "3",
-      name: "A Famosa & St. Paul's Hill",
-      description:
-        "Historic Portuguese fortress ruins and stunning hilltop views of Melaka",
-      cost: "RM500",
-      duration: "2 days",
-      season: "Raya",
-      interests: ["Culture", "Photography", "Nature"],
-      groupMatch: 0,
-      individualMatches: [],
-    },
-    {
-      id: "4",
-      name: "Melaka River Cruise",
-      description:
-        "Scenic river cruise showcasing colorful murals and heritage buildings along the waterway",
-      cost: "RM700",
-      duration: "2 days",
-      season: "Raya",
-      interests: ["Nature", "Photography", "Culture"],
-      groupMatch: 0,
-      individualMatches: [],
-    },
-  ]);
+    }));
+    return selected;
+  });
 
-  const totalCost = currentSelectedDestinations.reduce((acc, dest) => acc + parseInt(dest.cost.replace("RM", "")), 0);
+  const [currentAvailableDestinations, setCurrentAvailableDestinations] = React.useState<Destination[]>(() => {
+    const available = initialDestinations.slice(2, 4).map(dest => ({
+      ...dest,
+      cost: dest.cost,
+      duration: `${dest.duration} days`,
+      interests: dest.category,
+      groupMatch: calculateGroupMatch({ ...dest, cost: dest.cost, interests: dest.category, groupMatch: 0, individualMatches: [], note: '', duration: '', season: dest.season, id: dest.id, name: dest.name, description: dest.description }, initialMembers),
+      individualMatches: [],
+    }));
+    return available;
+  });
+
+  const totalCost = currentSelectedDestinations.reduce((acc, dest) => acc + dest.cost, 0);
   const memberCount = 4; // Assuming a fixed member count for now
 
   const handleSelectDestination = (destination: Destination) => {
@@ -475,7 +479,7 @@ export default function ItineraryPage() {
                       <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
                         <div className="flex items-center gap-2">
                           <Wallet className="size-4 text-slate-500" />
-                          {destination.cost}
+                          RM{destination.cost}
                         </div>
                         <div className="flex items-center gap-2">
                           <CalendarDays className="size-4 text-slate-500" />
@@ -567,7 +571,7 @@ export default function ItineraryPage() {
                         <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600">
                           <div className="flex items-center gap-2">
                             <Wallet className="size-3 text-slate-500" />
-                            {destination.cost}
+                            RM{destination.cost}
                           </div>
                           <div className="flex items-center gap-2">
                             <CalendarDays className="size-3 text-slate-500" />
@@ -591,13 +595,21 @@ export default function ItineraryPage() {
                         </div>
 
                         <div className="border-t border-violet-200 pt-3">
-                          <Button
-                            variant="outline"
-                            className="w-full justify-between border-violet-200 text-violet-700 hover:bg-violet-50"
-                          >
-                            <span>Suggested Itinerary</span>
-                            <ChevronRight className="size-4" />
-                          </Button>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <AlertCircle className="size-4 text-violet-700" />
+                              <span className="text-xs text-slate-600">
+                                Group Match
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-violet-700">
+                              {destination.groupMatch}%
+                            </span>
+                          </div>
+                          <Progress
+                            value={destination.groupMatch}
+                            className="h-2 mt-2 bg-slate-200 **:data-[slot=progress-indicator]:bg-violet-500"
+                          />
                         </div>
                       </div>
                     </CardContent>
