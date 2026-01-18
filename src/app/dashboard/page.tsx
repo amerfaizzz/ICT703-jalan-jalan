@@ -3,7 +3,12 @@
 import * as React from "react"
 import { Navigation } from "@/components/shared/navigation"
 import TabBar from "../../components/ui/TabBar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import {
   Select,
@@ -23,49 +28,44 @@ import {
 import { ConflictItem, SummaryStat, DashboardDestination } from "@/types"
 
 
-function severityStyles(severity: ConflictItem["severity"]) {
-  switch (severity) {
-    case "high":
-      return {
-        container: "bg-red-50 border-red-200 text-red-900",
-        icon: "text-red-700",
-        text: "text-red-900",
-        sub: "text-red-800/80",
-      }
-    case "medium":
-      return {
-        container: "bg-yellow-50 border-yellow-200 text-yellow-900",
-        icon: "text-yellow-800",
-        text: "text-yellow-900",
-        sub: "text-yellow-900/80",
-      }
-    case "low":
-    default:
-      return {
-        container: "bg-blue-50 border-blue-200 text-blue-900",
-        icon: "text-blue-700",
-        text: "text-blue-900",
-        sub: "text-blue-900/80",
-      }
+const severityStyles = (severity: ConflictItem["severity"]) => {
+  const styles = {
+    high: {
+      container: "bg-red-50 border-red-200 text-red-900",
+      icon: "text-red-700",
+      text: "text-red-900",
+      sub: "text-red-800/80",
+    },
+    medium: {
+      container: "bg-yellow-50 border-yellow-200 text-yellow-900",
+      icon: "text-yellow-800",
+      text: "text-yellow-900",
+      sub: "text-yellow-900/80",
+    },
+    low: {
+      container: "bg-blue-50 border-blue-200 text-blue-900",
+      icon: "text-blue-700",
+      text: "text-blue-900",
+      sub: "text-blue-900/80",
+    },
   }
+  return styles[severity] || styles.low
 }
 
-function Pill({
+const Pill = ({
   dotClassName,
   children,
 }: {
   dotClassName: string
   children: React.ReactNode
-}) {
-  return (
-    <div className="inline-flex items-center gap-2">
-      <span className={`size-3 rounded-full ${dotClassName}`} />
-      <span className="text-sm text-slate-700">{children}</span>
-    </div>
-  )
-}
+}) => (
+  <div className="inline-flex items-center gap-2">
+    <span className={`size-3 rounded-full ${dotClassName}`} />
+    <span className="text-sm text-slate-700">{children}</span>
+  </div>
+)
 
-export default function DashboardPage() {
+const DashboardPage = () => {
   const [conflictFilter, setConflictFilter] = React.useState<string>("all")
 
   const summary: SummaryStat[] = [
@@ -162,10 +162,9 @@ export default function DashboardPage() {
     },
   ]
 
-  const filteredConflicts = conflicts.filter((c) => {
-    if (conflictFilter === "all") return true
-    return c.severity === conflictFilter
-  })
+  const filteredConflicts = conflicts.filter((c) =>
+    conflictFilter === "all" ? true : c.severity === conflictFilter
+  )
 
   const conflictCounts = {
     high: conflicts.filter((c) => c.severity === "high").length,
@@ -180,8 +179,28 @@ export default function DashboardPage() {
         <TabBar />
       </div>
 
-      <main className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-8">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-2">
         <div className="flex flex-col gap-6">
+          <header className="flex items-center gap-4 py-2 ">
+            <div className="shrink-0 rounded-full bg-violet-100 p-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6 text-violet-700"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 3v11.25m0 0c0 3.727 3.023 6.75 6.75 6.75s6.75-3.023 6.75-6.75m-13.5 0h13.5m0 0V3m0 11.25c0 3.727-3.023 6.75-6.75 6.75s-6.75-3.023-6.75-6.75"
+                />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900">My Dashboard</h1>
+          </header>
+
           {/* Group Summary */}
           <Card className="border-[#AD46FF] bg-white">
             <CardHeader className="pb-2">
@@ -380,3 +399,5 @@ export default function DashboardPage() {
     </div>
   )
 }
+
+export default DashboardPage

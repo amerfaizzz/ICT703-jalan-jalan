@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
+import { ItineraryTimeline } from '../../../components/dashboard/cards/itinerary-timeline';
 import {
   Select,
   SelectContent,
@@ -282,7 +283,29 @@ export default function ItineraryPage() {
         <TabBar totalCost={totalCost} memberCount={memberCount} />
       </div>
 
-      <main className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-8">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-2">
+
+        <header className="flex items-center gap-4 py-4">
+            <div className="shrink-0 rounded-full bg-violet-100 p-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6 text-violet-700"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 3v11.25m0 0c0 3.727 3.023 6.75 6.75 6.75s6.75-3.023 6.75-6.75m-13.5 0h13.5m0 0V3m0 11.25c0 3.727-3.023 6.75-6.75 6.75s-6.75-3.023-6.75-6.75"
+                />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900">My Itinerary</h1>
+          </header>
+
+
         <div className="flex flex-col gap-6">
           {/* Full Trip Itinerary */}
           <Card className="border-[#AD46FF] bg-white">

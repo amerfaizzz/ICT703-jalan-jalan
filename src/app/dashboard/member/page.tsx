@@ -28,7 +28,29 @@ export default function MembersPage() {
         <TabBar />
       </div>
 
-      <main className="container mx-auto px-6 lg:px-24 py-8">
+      <main className="container mx-auto px-6 lg:px-24 py-2">
+
+        <header className="flex items-center gap-4 py-4">
+            <div className="shrink-0 rounded-full bg-violet-100 p-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6 text-violet-700"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 3v11.25m0 0c0 3.727 3.023 6.75 6.75 6.75s6.75-3.023 6.75-6.75m-13.5 0h13.5m0 0V3m0 11.25c0 3.727-3.023 6.75-6.75 6.75s-6.75-3.023-6.75-6.75"
+                />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900">My Members</h1>
+          </header>
+
+
         {pathname === "/dashboard/member" && (
           <div className="space-y-6">
             <PreferenceChart members={members} />
