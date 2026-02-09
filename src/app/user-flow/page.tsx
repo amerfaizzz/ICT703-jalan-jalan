@@ -70,8 +70,8 @@ const groups = [
     textClass: "text-blue-600 dark:text-blue-400",
     pages: [
       { path: "/dashboard", name: "Dashboard", description: "Main travel dashboard" },
-      { path: "/dashboard/schedule", name: "Schedule", description: "Trip schedule & updates" },
-      { path: "/dashboard/budget", name: "Budget", description: "Budget tracking" },
+      { path: "/dashboard/itenary", name: "Itinerary", description: "Trip itinerary & schedule" },
+      { path: "/dashboard/member", name: "Members", description: "Group member management" },
       { path: "/wanderboard", name: "Wanderboard", description: "Destination explorer" },
     ],
     features: [
@@ -189,7 +189,7 @@ const userJourneys = [
     description: "Users currently on their trip",
     steps: [
       { group: 2, action: "Check weather", page: "/dashboard" },
-      { group: 2, action: "View schedule", page: "/dashboard/schedule" },
+      { group: 2, action: "View itinerary", page: "/dashboard/itenary" },
       { group: 1, action: "Ask AI for tips", page: "/chat" },
       { group: 3, action: "Log expenses", page: "/informatics/planner" },
     ],
